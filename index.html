@@ -29,11 +29,17 @@
     header {
       background-color: rgba(0, 0, 0, 0.7);
       backdrop-filter: saturate(180%) blur(10px);
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 50;
     }
 
-    header .container {
+    .container {
       max-width: 1024px;
-      margin: 0 auto;
+      margin-left: auto;
+      margin-right: auto;
       padding-left: 1rem;
       padding-right: 1rem;
     }
@@ -43,20 +49,111 @@
       height: 5rem;
     }
 
-    /* Menu */
-    nav.space-x-6 a {
+    /* Menu desktop */
+    nav.desktop-menu {
+      display: none;
+    }
+    nav.desktop-menu a {
       letter-spacing: 0.05em;
       padding: 0.5rem 0;
       display: inline-block;
       transition: color 0.3s ease;
+      margin-right: 1.5rem;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 0.875rem;
     }
-
-    nav.space-x-6 a:not(:last-child) {
-      margin-right: 1.5rem; /* Espaço maior entre links */
+    nav.desktop-menu a:last-child {
+      margin-right: 0;
     }
-
-    nav.space-x-6 a:hover {
+    nav.desktop-menu a:hover {
       color: #d1d5db;
+    }
+
+    /* Menu hamburguer mobile */
+    .mobile-menu-button {
+      display: block;
+      background: none;
+      border: none;
+      cursor: pointer;
+      width: 2rem;
+      height: 2rem;
+      position: relative;
+      z-index: 60;
+    }
+    .mobile-menu-button span,
+    .mobile-menu-button span::before,
+    .mobile-menu-button span::after {
+      display: block;
+      background-color: white;
+      height: 3px;
+      border-radius: 2px;
+      position: absolute;
+      width: 100%;
+      transition: all 0.3s ease;
+    }
+    .mobile-menu-button span {
+      top: 50%;
+      margin-top: -1.5px;
+    }
+    .mobile-menu-button span::before {
+      content: "";
+      top: -8px;
+    }
+    .mobile-menu-button span::after {
+      content: "";
+      top: 8px;
+    }
+
+    /* Quando ativo (cruz) */
+    .mobile-menu-button.active span {
+      background-color: transparent;
+    }
+    .mobile-menu-button.active span::before {
+      transform: rotate(45deg);
+      top: 0;
+    }
+    .mobile-menu-button.active span::after {
+      transform: rotate(-45deg);
+      top: 0;
+    }
+
+    /* Menu mobile */
+    nav.mobile-menu {
+      display: none;
+      position: fixed;
+      top: 5rem;
+      left: 0;
+      width: 100%;
+      background-color: rgba(0, 0, 0, 0.9);
+      backdrop-filter: saturate(180%) blur(10px);
+      flex-direction: column;
+      z-index: 55;
+    }
+    nav.mobile-menu a {
+      padding: 1rem 1.5rem;
+      border-bottom: 1px solid #444;
+      color: white;
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background-color 0.3s ease;
+    }
+    nav.mobile-menu a:hover {
+      background-color: #222;
+    }
+
+    /* Mostrar desktop menu em telas maiores */
+    @media (min-width: 768px) {
+      .mobile-menu-button {
+        display: none;
+      }
+      nav.mobile-menu {
+        display: none !important;
+      }
+      nav.desktop-menu {
+        display: flex;
+      }
     }
 
     /* Hero */
@@ -120,6 +217,18 @@
       margin-right: auto;
       padding-left: 1rem;
       padding-right: 1rem;
+      text-align: center;
+    }
+
+    /* Texto informativo para clicar nas fotos */
+    .click-info {
+      max-width: 640px;
+      margin: 0 auto 2rem auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+      color: #a1a1aa;
+      font-style: italic;
+      font-size: 1rem;
       text-align: center;
     }
 
@@ -246,32 +355,36 @@
       margin-left: auto;
       margin-right: auto;
     }
-
-    /* Container geral */
-    .container {
-      max-width: 1024px;
-      margin-left: auto;
-      margin-right: auto;
-      padding-left: 1rem;
-      padding-right: 1rem;
-    }
-
   </style>
 </head>
 <body>
 
   <!-- Header fixo -->
-  <header class="fixed top-0 left-0 w-full z-50">
+  <header>
     <div class="container flex justify-between items-center p-6">
       <h1 class="text-2xl font-bold text-white tracking-wide">
         Arthur Bueno da Silva
       </h1>
-      <nav class="space-x-6 uppercase text-sm font-medium">
-        <a href="#galeria" class="hover:text-gray-300 transition">Galeria</a>
-        <a href="#sobre" class="hover:text-gray-300 transition">Sobre</a>
-        <a href="#contato" class="hover:text-gray-300 transition">Contato</a>
+
+      <!-- Botão hamburger para mobile -->
+      <button class="mobile-menu-button" id="mobile-menu-button" aria-label="Abrir menu">
+        <span></span>
+      </button>
+
+      <!-- Menu desktop -->
+      <nav class="desktop-menu">
+        <a href="#galeria">Galeria</a>
+        <a href="#sobre">Sobre</a>
+        <a href="#contato">Contato</a>
       </nav>
     </div>
+
+    <!-- Menu mobile -->
+    <nav class="mobile-menu" id="mobile-menu">
+      <a href="#galeria" onclick="toggleMobileMenu()">Galeria</a>
+      <a href="#sobre" onclick="toggleMobileMenu()">Sobre</a>
+      <a href="#contato" onclick="toggleMobileMenu()">Contato</a>
+    </nav>
   </header>
 
   <div class="header-space"></div>
@@ -287,6 +400,10 @@
   <section id="galeria" class="container py-24 px-4">
 
     <h2>Galeria</h2>
+
+    <p class="click-info">
+      Clique nas fotos para visualizar mais informações e ampliá-las.
+    </p>
 
     <!-- Categoria Eventos -->
     <div class="mb-16">
@@ -441,29 +558,52 @@
     </p>
   </section>
 
-  <!-- Script GLightbox -->
   <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
   <script>
+    // Lightbox
     const lightbox = GLightbox({
       selector: ".glightbox",
-      loop: true,
     });
 
-    // Troca a imagem no hover para a galeria "Lugares"
-    const hoverSwitch = document.getElementById('hover-switch');
-    const hoverImage = document.getElementById('hover-image');
+    // Menu hamburguer toggle
+    const mobileMenuButton = document.getElementById("mobile-menu-button");
+    const mobileMenu = document.getElementById("mobile-menu");
 
+    function toggleMobileMenu() {
+      mobileMenu.classList.toggle("open");
+      mobileMenuButton.classList.toggle("active");
+      if (mobileMenu.classList.contains("open")) {
+        mobileMenu.style.display = "flex";
+      } else {
+        mobileMenu.style.display = "none";
+      }
+    }
+
+    mobileMenuButton.addEventListener("click", toggleMobileMenu);
+
+    // Fechar menu ao clicar em link mobile
+    mobileMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", () => {
+        if (window.innerWidth < 768) {
+          toggleMobileMenu();
+        }
+      });
+    });
+
+    // Troca de imagem no hover (galeria Lugares)
+    const hoverSwitch = document.getElementById("hover-switch");
+    const hoverImage = document.getElementById("hover-image");
     const originalSrc = hoverImage.src;
-    const hoverSrc = "imagens/448668203_376331378354982_6912447058394186691_n.webp.jpg";
+    const hoverSrc =
+      "imagens/448668203_376331378354982_6912447058394186691_n.webp.jpg";
 
-    hoverSwitch.addEventListener('mouseenter', () => {
+    hoverSwitch.addEventListener("mouseenter", () => {
       hoverImage.src = hoverSrc;
     });
 
-    hoverSwitch.addEventListener('mouseleave', () => {
+    hoverSwitch.addEventListener("mouseleave", () => {
       hoverImage.src = originalSrc;
     });
   </script>
-
 </body>
 </html>
