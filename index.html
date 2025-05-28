@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfólio de Fotografia</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap"
+    rel="stylesheet"
+  />
+  <link
+    rel="stylesheet"
+    href="https://cdn.jsdelivr.net/npm/glightbox/dist/css/glightbox.min.css"
+  />
+  <style>
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(to bottom, #0f0f0f, #1f1f1f, #2f2f2f, #444);
+      background-attachment: fixed;
+      color: white;
+      margin: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    header {
+      background-color: rgba(0, 0, 0, 0.7);
+    }
+
+    .hero-bg {
+      height: 60vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 0 1rem;
+    }
+
+    .hero-content h2 {
+      font-size: 2.5rem;
+      font-weight: 700;
+      line-height: 1.2;
+      margin: 0;
+    }
+
+    @media (min-width: 640px) {
+      .hero-content h2 {
+        font-size: 3.5rem;
+      }
+    }
+
+    section h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      color: #d1d5db; /* cor clara nos títulos */
+      margin-bottom: 0.75rem;
+      line-height: 1.2;
+    }
+
+    /* Títulos de subtítulos como Lugares, Eventos, Produtos */
+    section h3 {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #d1d5db;
+      margin-bottom: 1rem;
+      text-align: left;
+    }
+
+    p {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      margin-bottom: 2rem;
+      color: #d1d5db;
+    }
+
+    /* GALERIA ESTILOS */
+    .gallery-columns {
+      columns: 1;
+      gap: 1.5rem;
+      break-inside: avoid;
+    }
+
+    @media (min-width: 640px) {
+      .gallery-columns {
+        columns: 2;
+      }
+    }
+    @media (min-width: 768px) {
+      .gallery-columns {
+        columns: 3;
+      }
+    }
+
+    .gallery-item {
+      break-inside: avoid;
+      margin-bottom: 1.5rem;
+      border: 1px solid #3f3f46; /* neutro-700 */
+      border-radius: 0.5rem;
+      background: #111111;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.7);
+      overflow: hidden;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+    }
+
+    .gallery-item:hover img {
+      transform: scale(1.05);
+    }
+
+    /* Overlay texto no hover */
+    .overlay-text {
+      position: absolute;
+      inset: 0;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      padding: 0 1rem;
+      text-align: center;
+      font-size: 0.875rem;
+    }
+
+    .gallery-item:hover .overlay-text {
+      opacity: 1;
+    }
+
+    /* Para a imagem que troca no hover */
+    #hover-switch img {
+      width: 100%;
+      display: block;
+      transition: transform 0.3s ease;
+      object-fit: cover;
+    }
+
+    /* Texto descritivo da Unoesc ajustado */
+    .gallery-description {
+      font-size: 1.125rem; /* 18px */
+      color: #d1d5db; /* Tailwind: text-neutral-300 */
+      max-width: 48rem; /* equivalente a max-w-3xl */
+      margin: 0 auto 3rem auto;
+      line-height: 1.6;
+      text-align: center;
+      padding: 0 1rem;
+    }
+
+    /* Destaque para o título Galeria */
+    #galeria > h2 {
+      font-size: 3rem;
+      font-weight: 800;
+      color: #d1d5db;
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.7);
+      margin-bottom: 1.5rem;
+      text-align: center;
+      position: relative;
+      line-height: 1.1;
+      padding: 0 1rem;
+    }
+
+    #galeria > h2::after {
+      content: "";
+      display: block;
+      width: 12rem; /* linha mais comprida */
+      height: 4px;  /* mesma espessura */
+      background-color: #d1d5db;
+      margin: 0.75rem auto 0;
+      border-radius: 2px;
+    }
+
+    @media (min-width: 640px) {
+      #galeria > h2 {
+        font-size: 3.75rem;
+      }
+      #galeria > h2::after {
+        width: 16rem; /* linha ainda maior no desktop */
+        height: 4px;
+      }
+    }
+
+    /* Ajustes no header */
+    header {
+      backdrop-filter: saturate(180%) blur(10px);
+    }
+
+    header .container {
+      max-width: 1024px;
+      margin: 0 auto;
+    }
+
+    /* Espaço para header fixo */
+    .header-space {
+      height: 5rem;
+    }
+
+    /* SOBRE */
+    #sobre {
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+
+    #sobre h2 {
+      margin-bottom: 2rem;
+      text-align: center;
+      font-size: 2rem;
+      color: #d1d5db;
+    }
+
+    /* Subtítulo Lugares antes do texto da galeria */
+    #galeria .lugares-subtitle {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #d1d5db;
+      margin-bottom: 0.75rem;
+      text-align: left;
+      max-width: 1024px;
+      padding-left: 1rem;
+    }
+
+    /* Container geral */
+    .container {
+      max-width: 1024px;
+      margin-left: auto;
+      margin-right: auto;
+      padding-left: 1rem;
+      padding-right: 1rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header fixo -->
+  <header class="fixed top-0 left-0 w-full z-50">
+    <div class="container flex justify-between items-center p-6">
+      <h1 class="text-2xl font-bold text-white tracking-wide">
+        Arthur Bueno da Silva
+      </h1>
+      <nav class="space-x-6 uppercase text-sm font-medium">
+        <a href="#galeria" class="hover:text-gray-300 transition">Galeria</a>
+        <a href="#sobre" class="hover:text-gray-300 transition">Sobre</a>
+        <a href="#contato" class="hover:text-gray-300 transition">Contato</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="header-space"></div>
+
+  <!-- Hero -->
+  <section class="hero-bg">
+    <div class="hero-content">
+      <h2>Portfólio de Fotografia</h2>
+    </div>
+  </section>
+
+  <!-- Galeria -->
+  <section id="galeria" class="container py-24 px-4">
+
+    <h2>Galeria</h2>
+
+    <!-- Categoria Eventos -->
+    <div class="mb-16">
+      <h3>Eventos</h3>
+      <div class="gallery-columns">
+
+        <div class="gallery-item">
+          <img
+            src="imagens/evento-anime.png"
+            alt="Evento Anime"
+            loading="lazy"
+          />
+          <div class="overlay-text">
+            Convenção de Anime com cosplayers incríveis
+          </div>
+        </div>
+
+        <!-- Adicione mais imagens de Eventos aqui -->
+
+      </div>
+    </div>
+    <!-- Subtítulo Lugares alinhado à esquerda antes do texto da galeria -->
+    <h3 class="lugares-subtitle">Lugares</h3>
+
+    <p class="gallery-description">
+      Fotografias realizadas na Unoesc Chapecó, destacando a vida estudantil e momentos autênticos dos alunos.
+    </p>
+
+    <div class="gallery-columns">
+
+      <!-- Item 1 -->
+      <div class="gallery-item">
+        <img
+          src="imagens/foto Yasmin unoesc Chapecó .jpg"
+          alt="Foto tirada na Unochapecó"
+          loading="lazy"
+        />
+        <div class="overlay-text">
+          Foto tirada na Unochapecó, Chapecó
+        </div>
+      </div>
+
+      <!-- Item 2 -->
+      <div class="gallery-item">
+        <img
+          src="imagens/Yasmin unoesc.jpg"
+          alt="Foto tirada na Unochapecó"
+          loading="lazy"
+        />
+        <div class="overlay-text">
+          Foto tirada na Unochapecó, Chapecó
+        </div>
+      </div>
+
+      <!-- Item 3 -->
+      <div class="gallery-item">
+        <img
+          src="imagens/459035194_502971669337044_2992769958103428967_n.webp.jpg"
+          alt="Foto tirada na Unochapecó"
+          loading="lazy"
+        />
+        <div class="overlay-text">
+          Foto tirada na Unochapecó, Chapecó
+        </div>
+      </div>
+
+      <!-- Item 4 -->
+      <div class="gallery-item">
+        <img
+          src="imagens/guto.jpg"
+          alt="Foto tirada na Unochapecó"
+          loading="lazy"
+        />
+        <div class="overlay-text">
+          Foto tirada na Unochapecó, Chapecó
+        </div>
+      </div>
+
+      <!-- Item com troca de imagem no hover + lightbox -->
+      <div class="gallery-item" id="hover-switch">
+
+        <a href="imagens/448668203_376331378354982_6912447058394186691_n.webp.jpg"
+          class="glightbox"
+          data-gallery="lugar"
+          data-title="Foto 1 na Unochapecó, Chapecó"
+        >
+          <img
+            src="imagens/448756821_853796866615257_2625296674306915127_n.webp.jpg"
+            alt="Foto 1 na Unochapecó"
+            loading="lazy"
+            id="hover-image"
+          />
+        </a>
+
+        <!-- Overlay texto -->
+        <div class="overlay-text">
+          Foto tirada na Unochapecó, Chapecó
+        </div>
+
+        <!-- Segunda imagem para lightbox, oculta -->
+        <a
+          href="imagens/448668203_376331378354982_6912447058394186691_n.webp.jpg"
+          class="glightbox"
+          data-gallery="lugar"
+          data-title="Foto 2 na Unochapecó, Chapecó"
+          style="display: none;"
+        ></a>
+
+      </div>
+
+    </div>
+
+   
+        <!-- Adicione mais imagens de Eventos aqui -->
+
+      </div>
+    </div>
+
+    <!-- Categoria Produtos -->
+    <div class="mb-16">
+      <h3>Produtos</h3>
+      <div class="gallery-columns">
+
+        <div class="gallery-item">
+          <img
+            src="imagens/produto1.jpg"
+            alt="Produto artesanal feito à mão"
+            loading="lazy"
+          />
+          <div class="overlay-text">
+            Produto artesanal feito à mão com detalhes únicos
+          </div>
+        </div>
+
+        <div class="gallery-item">
+          <img
+            src="imagens/nova-imagem.jpg"
+            alt="Nova imagem adicionada"
+            loading="lazy"
+          />
+          <div class="overlay-text">
+            Nova imagem adicionada com cenário natural e luz suave
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <!-- Sobre -->
+  <section id="sobre" class="container py-24 px-4">
+    <h2>Sobre Mim</h2>
+    <p class="max-w-3xl mx-auto text-center text-neutral-300 leading-relaxed">
+      Sou um fotógrafo apaixonado por registrar momentos únicos e transmitir
+      emoção por meio das minhas lentes. Tenho experiência em eventos culturais,
+      como convenções de anime, fotografia de produtos e também projetos acadêmicos.
+      Estou sempre em busca de novas oportunidades para contar histórias visuais com autenticidade e impacto.
+    </p>
+  </section>
+
+  <!-- Script GLightbox -->
+  <script src="https://cdn.jsdelivr.net/npm/glightbox/dist/js/glightbox.min.js"></script>
+  <script>
+    const lightbox = GLightbox({
+      selector: ".glightbox",
+      loop: true,
+    });
+
+    // Troca a imagem no hover para a galeria "Lugares"
+    const hoverSwitch = document.getElementById('hover-switch');
+    const hoverImage = document.getElementById('hover-image');
+
+    const originalSrc = hoverImage.src;
+    const hoverSrc = "imagens/448668203_376331378354982_6912447058394186691_n.webp.jpg";
+
+    hoverSwitch.addEventListener('mouseenter', () => {
+      hoverImage.src = hoverSrc;
+    });
+
+    hoverSwitch.addEventListener('mouseleave', () => {
+      hoverImage.src = originalSrc;
+    });
+  </script>
+
+</body>
+</html>
