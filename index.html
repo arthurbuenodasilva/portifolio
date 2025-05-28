@@ -355,6 +355,22 @@
       margin-left: auto;
       margin-right: auto;
     }
+
+    /* Estrela transparente */
+.star-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 24px;
+  height: 24px;
+  background-image: url('https://img.icons8.com/ios-filled/50/ffffff/star.png');
+  background-size: contain;
+  background-repeat: no-repeat;
+  opacity: 0.6;
+  pointer-events: none;
+  z-index: 10;
+}
+
   </style>
 </head>
 <body>
@@ -481,6 +497,9 @@
 
       <!-- Item com troca de imagem no hover + lightbox -->
       <div class="gallery-item" id="hover-switch">
+        <!-- Estrela transparente -->
+<div class="star-icon"></div>
+
         <a href="imagens/448668203_376331378354982_6912447058394186691_n.webp.jpg"
           class="glightbox"
           data-gallery="lugar"
